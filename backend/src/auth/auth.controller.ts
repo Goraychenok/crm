@@ -1,28 +1,37 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
-  HttpStatus,
   Post,
-  Request,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SkipAuth } from './skipAuth';
+import { AuthDto } from './dto/auth.dto';
+import { RefreshAuthDto } from './dto/refreshAuth.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @SkipAuth()
-  @HttpCode(HttpStatus.OK)
-  @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.username, signInDto.password);
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Post('register')
+  async register(@Body() dto: AuthDto) {
+    return this.authService.register(dto);
   }
 
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Post('login')
+  async login(@Body() dto: AuthDto) {
+    return this.authService.login(dto);
+  }
+
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Post('login/access-token')
+  async getNewTokens(@Body() dto: RefreshAuthDto) {
+    return this.authService.getNewTokens(dto);
   }
 }

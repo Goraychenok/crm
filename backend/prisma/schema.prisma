@@ -13,5 +13,43 @@ datasource db {
 model User {
   id    Int     @default(autoincrement()) @id
   email String  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  password String
   name  String?
+  phone String @default("")
+  role    Role     @default(USER)
+  projects Project[]
+}
+
+
+model Project {
+  id    Int     @default(autoincrement()) @id
+  title String
+  is_active Boolean @default(true)
+  admin   User @relation(fields: [adminId], references: [id])
+  adminId Int
+}
+
+
+
+
+// model Task {
+//   id  Int     @default(autoincrement()) @id
+//   title String
+//   status Status @default(NEW)
+// }
+
+
+enum Role {
+  USER
+  ADMIN
+  PM
+  DEV
+}
+
+enum Status {
+  NEW
+  IN_WORK
+  COMPLETE
 }

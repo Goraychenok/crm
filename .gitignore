@@ -56,5 +56,4 @@ next-admin/node_modules
 next-admin/.next
 next-admin/.env
 node_modules
-docker-compose.yml
 backend/.env

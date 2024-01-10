@@ -59,6 +59,7 @@ export class AuthService {
         email: dto.email,
         name: faker.name.firstName(),
         password: await hash(dto.password),
+        bitrixId: null,
       },
     });
 
